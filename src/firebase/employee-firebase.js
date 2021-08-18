@@ -1,7 +1,11 @@
 import {db, firebase} from './init.js'
 import Employee from '../model/employee.js';
+import { ref, onUnmounted } from '@vue/composition-api'
+import { format, parseISO, subYears } from 'date-fns'
+
+
 // transactions
-function updateTransactionFirestore(id, firstNameEmployee, lastNameEmployee, emailEmployee, birthDateEmployee, genderEmployee, imageEmployee){
+async function updateTransactionFirestore(id, firstNameEmployee, lastNameEmployee, emailEmployee, birthDateEmployee, genderEmployee, imageEmployee){
     var employeeDocRef = db.collection("employees").doc(id+"");
     return db.runTransaction((transaction) => {
         // This code may get re-run multiple times if there are conflicts.
@@ -221,11 +225,21 @@ async function getNumberOfEmployeesDocFirestore(){
 export const useLoadEmployees = () => {
     const employees = ref([])
     const close = db.collection("employees").onSnapshot(snapshot => {
-        employees.value = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+        
+        employees.value = snapshot.docs.map(doc => {
+            console.log();
+            let firstName = doc.data().firstName;
+            let lastName = doc.data().lastName;
+            let email = doc.data().email;
+            let gender = doc.data().gender;
+            let birthDate = format(new Date(doc.data().birthDate.seconds*1000),'dd MMMM yyyy');
+            let image = doc.data().image;
+            return ({ id: doc.id, firstName, lastName, email, gender, birthDate, image })
+        })
     })
-    onUnmounted(close);
+    // onUnmounted(close);
     return employees;
 }
 
-export {getNumberOfEmployeesDocFirestore, addEmployeeToFirestore, getMaxId, useLoadEmployees}
+export {getNumberOfEmployeesDocFirestore, addEmployeeToFirestore, getMaxId}
 

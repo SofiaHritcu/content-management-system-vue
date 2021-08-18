@@ -5,17 +5,18 @@ class Store {
     constructor (){
         this.filters = new Map([['gender', ""], ['image', ""], ['birthDate', {start: new Date('1900-01-01'), end: new Date('2005-12-31')}]]);;
         this.currentId = 0;
-        this.getCurrentd();
+        this.getCurrentId();
     }
 
 
     async addEmployee(firstName, lastName, email, birthdate, gender, image){
-        
         var employee = new Employee(this.currentId, firstName, lastName, email, birthdate, gender, image);
+        this.currentId++;
         await addEmployeeToFirestore(employee);
     }
     
     async  deleteEmployee(employeeToDeleteId){
+        this.currentId--;
         await deleteEmployeeFromFirestore(employeeToDeleteId);
     }
     
@@ -27,7 +28,7 @@ class Store {
         return getEmployeeByIdFirestore(idEmployee);
     }
 
-    async getCurrentd(){
+    async getCurrentId(){
         let numberEmployees = await this.getNumberOfEmployees();
         if( numberEmployees !== 0){
             let maxId = await getMaxId();

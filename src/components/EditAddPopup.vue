@@ -97,7 +97,7 @@
                 ></v-file-input>
                 <v-row class="justify-center align-center">
                   <div class="image-preview text-center" v-if="profilePicture" text-center>
-                    <img class="preview" :src="profilePicture">
+                    <img ref="previewImg" class="preview" :src="profilePicture">
                 </div>
                 </v-row>
                 
@@ -106,7 +106,8 @@
                   text 
                   color="teal lighten-2"
                   text
-                  @click="submit" 
+                  @click="submit"
+                  :loading="loading" 
                   class="mx-4 mt-3">
                   Add Employee
                 </v-btn>
@@ -148,7 +149,7 @@
           birthDateMenu: false,
           minBirthDate: format(parseISO(new Date("01 01 1900").toISOString()), 'yyyy-MM-dd'),
           maxBirthDate: format(parseISO(subYears(new Date(),16).toISOString()), 'yyyy-MM-dd'),
-
+          loading: false,
 
           // validation rules
           nameRules : [
@@ -168,18 +169,25 @@
       methods: {
         submit() {
           if(this.$refs.employeeForm.validate()) {
+            this.loading = true
             this.employeesStore.addEmployee(this.firstName, this.lastName, this.email, this.birthDate, this.gender, this.profilePicture);
             console.log(this.firstName, this.lastName, this.email, this.genders, this.profilePicture);
-            this.dialog = false;          
+            this.loading = false
+            this.$refs.employeeForm.reset();
+            this.profilePicture = '';
+            this.dialog = false;
+            this.$emit('employeeAdded');       
             }
         },
         previewImage() {
             if (!this.profilePictureChosen) {this.data = "No File Chosen"}
-            var reader = new FileReader();
+            else{
+              var reader = new FileReader();
             
-            reader.readAsDataURL(this.profilePictureChosen);
-            reader.onload = () => {
-              this.profilePicture = reader.result;
+              reader.readAsDataURL(this.profilePictureChosen);
+              reader.onload = () => {
+                this.profilePicture = reader.result;
+              }
             }
         }
       },

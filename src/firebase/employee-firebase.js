@@ -76,6 +76,13 @@ async function  getEmployeesFromFirestore(){
     return employees;
 }
 
+async function  getAllEmployeesFromFirestore(){
+    var employeesFirebase = await db.collection("employees")
+                                    .get();
+    let employees = getEmployeesArray(employeesFirebase);
+    return employees;
+}
+
 async function getEmployeeByIdFirestore(id){
     var employeeFirebase = await db.collection("employees").doc(id+"").get();
     var employee = employeeFirebase.data();
@@ -89,7 +96,7 @@ async function getNumberOfEmployeesFromFirestore(){
 }
 
 async function getMaxId(){
-    let employees = await getEmployeesFromFirestore();
+    let employees = await getAllEmployeesFromFirestore();
     return Math.max.apply(Math, employees.map(function(employee) { return employee.idEmployee; }))
 
 }

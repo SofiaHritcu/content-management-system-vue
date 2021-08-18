@@ -1,5 +1,10 @@
 <template>
   <nav>
+    <v-snackbar v-model="snackbarEmployeeAdded" :timeout="4000" top color="teal lighten-4 teal--text text--darken-1">
+      <span>Awesome! You added a new employee!</span>
+      <v-btn color="white" text @click="snackbarEmployeeAdded = false">Close</v-btn>
+    </v-snackbar>
+
     <v-app-bar app color="teal lighten-5" >
         <v-app-bar-nav-icon  @click="drawer = !drawer" class="teal lighten-4 teal--text text--darken-1"></v-app-bar-nav-icon>
         <v-toolbar-title color="teal lighten-4">
@@ -18,7 +23,7 @@
    
 
     <v-navigation-drawer app v-model="drawer">
-        <EditAddPopup></EditAddPopup>
+        <EditAddPopup @employeeAdded="snackbarEmployeeAdded = true"></EditAddPopup>
     </v-navigation-drawer>
   </nav>
 </template>
@@ -30,7 +35,8 @@ export default {
     components: {EditAddPopup, },
     data() {
     return {
-      drawer: false
+      drawer: false,
+      snackbarEmployeeAdded: false,
     }
   }
 }

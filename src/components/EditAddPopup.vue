@@ -24,11 +24,12 @@
           </v-card-title>
           <v-card-text width="50%" class="teal--text text--lighten-4">
             Introduce employee data 
-            <v-form class="px-3 my-3">
+            <v-form class="px-3 my-3" ref="employeeForm">
                 <v-row>
                   <v-text-field 
                     v-model="firstName" 
                     label="First Name" 
+                    :rules="nameRules"
                     filled 
                     placeholder="Jack"
                     color="blue-grey lighten-2"
@@ -36,7 +37,8 @@
                   </v-text-field>
                   <v-text-field 
                     v-model="lastName" 
-                    label="Last Name" 
+                    label="Last Name"
+                    :rules="nameRules" 
                     filled 
                     placeholder="Nicholson"
                     color="blue-grey lighten-2">
@@ -45,12 +47,15 @@
                 <v-text-field 
                   v-model="email" 
                   label="Email" 
+                  :rules="emailRules"
                   filled 
                   placeholder="jake@gmail.com"
-                  color="blue-grey lighten-2">
+                  color="blue-grey lighten-2"
+                  class="my-4">
                 </v-text-field>
                 <v-select
                   :items="genders"
+                  :rules="genderRules"
                   filled
                   dense
                   color="teal lighten-2"
@@ -126,24 +131,40 @@
       },
       data: () =>{
         return {
-          dialog: false , 
+          // employee data 
           firstName:'', 
           lastName:'',
           email:'',
           birthDate: format(parseISO(subYears(new Date(),16).toISOString()), 'yyyy-MM-dd'),
           profilePicture: "",
-          profilePictureChosen: null,
 
+          // ui needed data
+          dialog: false , 
+          profilePictureChosen: null,
           genders: ['male', 'female'],
           birthDateMenu: false,
           minBirthDate: format(parseISO(new Date("01 01 1900").toISOString()), 'yyyy-MM-dd'),
           maxBirthDate: format(parseISO(subYears(new Date(),16).toISOString()), 'yyyy-MM-dd'),
+
+
+          // validation rules
+          nameRules : [
+            n => !!n || 'This field is required',
+          ],
+          emailRules : [
+            e => /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z0-9]+$/.test(e) || 'Email must have a valid format'
+          ],
+          genderRules : [
+            g => !!g || 'This field is required',
+          ],
         }
       },
       methods: {
         submit() {
-          console.log(this.firstName, this.lastName, this.email, this.genders, this.profilePicture);
-          this.dialog = false;
+          if(this.$refs.employeeForm.validate()) {
+            console.log(this.firstName, this.lastName, this.email, this.genders, this.profilePicture);
+            this.dialog = false;          
+            }
         },
         previewImage() {
             if (!this.profilePictureChosen) {this.data = "No File Chosen"}

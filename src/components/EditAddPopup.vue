@@ -54,6 +54,7 @@
                   class="my-4">
                 </v-text-field>
                 <v-select
+                  v-model="gender"
                   :items="genders"
                   :rules="genderRules"
                   filled
@@ -125,6 +126,7 @@
 
 <script>
   import { format, parseISO, subYears } from 'date-fns'
+  import Store from '../store/employee-store'
 
   export default {
       components: {
@@ -135,6 +137,7 @@
           firstName:'', 
           lastName:'',
           email:'',
+          gender:'',
           birthDate: format(parseISO(subYears(new Date(),16).toISOString()), 'yyyy-MM-dd'),
           profilePicture: "",
 
@@ -157,11 +160,15 @@
           genderRules : [
             g => !!g || 'This field is required',
           ],
+
+          // store
+          employeesStore: new Store(),
         }
       },
       methods: {
         submit() {
           if(this.$refs.employeeForm.validate()) {
+            this.employeesStore.addEmployee(this.firstName, this.lastName, this.email, this.birthDate, this.gender, this.profilePicture);
             console.log(this.firstName, this.lastName, this.email, this.genders, this.profilePicture);
             this.dialog = false;          
             }

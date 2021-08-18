@@ -69,7 +69,7 @@ class Employee {
 }
 
 // Firestore data converter
-var employeeConverter = {
+Employee.employeeConverter = {
     toFirestore: function(employee) {
         return {
                 firstName: employee.firstNameEmployee,
@@ -85,3 +85,5 @@ var employeeConverter = {
         return new Employee( data.firstName, data.lastName, data.email, data.gender, data.birthDate, data.image);
     }
 };
+
+export default Employee

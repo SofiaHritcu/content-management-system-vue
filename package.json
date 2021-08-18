@@ -10,11 +10,13 @@
     "@mdi/font": "^5.9.55",
     "@vue/reactivity": "^3.2.4",
     "core-js": "^3.6.5",
+    "date-fns": "^2.23.0",
     "material-design-icons-iconfont": "^6.1.0",
     "moment": "^2.29.1",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
-    "vuetify": "^2.4.0"
+    "vuetify": "^2.4.0",
+    "vuetify-image-input": "^19.2.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

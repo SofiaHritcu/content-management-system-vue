@@ -63,20 +63,38 @@
                 >
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
-                      :value="computedDateFormattedMomentjs"
+                      :value="computedDateFormattedDatefns"
                       clearable
                       label="Birthdate"
                       readonly
                       v-bind="attrs"
                       v-on="on"
                       @click:clear="birthDate = null"
+                      color="teal lighten-2"
                     ></v-text-field>
                   </template>
                   <v-date-picker
                     v-model="birthDate"
                     @change="birthDateMenu = false"
+                    color="teal lighten-2"
+                    :min="minBirthDate"
+                    :max="maxBirthDate"
                   ></v-date-picker>
                 </v-menu>
+                <v-file-input
+                  label="Profile picture"
+                  filled
+                  prepend-icon="mdi-camera"
+                  color="teal lighten-2"
+                  v-model="profilePictureChosen"
+                  @change="previewImage"
+                ></v-file-input>
+                <v-row class="justify-center align-center">
+                  <div class="image-preview text-center" v-if="profilePicture" text-center>
+                    <img class="preview" :src="profilePicture">
+                </div>
+                </v-row>
+                
                 <v-spacer></v-spacer>
                 <v-btn 
                   text 
@@ -101,26 +119,57 @@
 </template>
 
 <script>
-export default {
-    data: () =>{
-      return {
-        dialog: false , 
-        firstName:'', 
-        lastName:'',
-        email:'',
-        genders: ['male', 'female'],
-        birthDate: format(parseISO(new Date().toISOString()), 'yyyy-MM-dd'),
-        birthDateMenu: false,
-      }
-    },
-    methods: {
-      submit() {
-        console.log(this.firstName, this.lastName, this.email, this.genders)
+  import { format, parseISO, subYears } from 'date-fns'
+
+  export default {
+      components: {
+      },
+      data: () =>{
+        return {
+          dialog: false , 
+          firstName:'', 
+          lastName:'',
+          email:'',
+          birthDate: format(parseISO(subYears(new Date(),16).toISOString()), 'yyyy-MM-dd'),
+          profilePicture: "",
+          profilePictureChosen: null,
+
+          genders: ['male', 'female'],
+          birthDateMenu: false,
+          minBirthDate: format(parseISO(new Date("01 01 1900").toISOString()), 'yyyy-MM-dd'),
+          maxBirthDate: format(parseISO(subYears(new Date(),16).toISOString()), 'yyyy-MM-dd'),
+        }
+      },
+      methods: {
+        submit() {
+          console.log(this.firstName, this.lastName, this.email, this.genders, this.profilePicture);
+          this.dialog = false;
+        },
+        previewImage() {
+            if (!this.profilePictureChosen) {this.data = "No File Chosen"}
+            var reader = new FileReader();
+            
+            reader.readAsDataURL(this.profilePictureChosen);
+            reader.onload = () => {
+              this.profilePicture = reader.result;
+            }
+        }
+      },
+      computed: {
+        computedDateFormattedDatefns () {
+          return this.birthDate ? format(parseISO(this.birthDate), 'dd MMMM yyyy') : ''
+        }
       }
   }
-}
 </script>
 
 <style>
-
+  .preview {
+    /* border-radius: 50%; */
+    width: 50%;
+    height: 50%;
+  }
+  .image-preview {
+    width: fit-content;
+  }
 </style>

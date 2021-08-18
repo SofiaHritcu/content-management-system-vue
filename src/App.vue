@@ -1,9 +1,9 @@
 <template>
-  <v-app class="teal lighten-4">
-    <Navbar></Navbar>
-    <v-main>
-      <router-view/>
-    </v-main>
+  <v-app class="app">
+      <Navbar></Navbar>
+      <v-main class="main">
+        <router-view/>
+      </v-main>    
   </v-app>
 </template>
 
@@ -20,3 +20,12 @@ export default {
   }),
 }
 </script>
+
+<style scoped>
+  #app {
+    background: url('./assets/background.png')  no-repeat ;
+    background-attachment: fixed;
+    background-size: cover;
+    overflow-y: hidden;
+  }
+</style>

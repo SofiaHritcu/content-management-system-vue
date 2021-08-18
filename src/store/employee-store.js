@@ -78,8 +78,6 @@ class Store {
         return await filterAllFirestore(filters);
     }
     
-    
-    
 }
 
 export default Store

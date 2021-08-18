@@ -217,4 +217,15 @@ async function getNumberOfEmployeesDocFirestore(){
     return await noOfEmployeesAsync.data().noOfEmployees;
 }
 
-export {getNumberOfEmployeesDocFirestore, addEmployeeToFirestore, getMaxId}
+// get users with listener 
+export const useLoadEmployees = () => {
+    const employees = ref([])
+    const close = db.collection("employees").onSnapshot(snapshot => {
+        employees.value = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+    })
+    onUnmounted(close);
+    return employees;
+}
+
+export {getNumberOfEmployeesDocFirestore, addEmployeeToFirestore, getMaxId, useLoadEmployees}
+

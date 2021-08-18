@@ -1,14 +1,16 @@
 <template>
   <v-row style="height: 100%;" align="center" justify="center">
-    <v-btn
-    class="my-10"
-    @click.stop="dialog = true"
-    outlined
-    fab
-    x-large
-    color="teal darken-3">
+    <!-- <v-btn
+      class="my-10"
+      @click.stop="dialog = true"
+      outlined
+      fab
+      x-large
+      color="teal darken-3"
+    >
         <v-icon>mdi-account-plus</v-icon>
-    </v-btn>
+    </v-btn> -->
+    <slot name="buttonSlot"></slot>
     <v-dialog
     v-model="dialog"
     width="40%"

@@ -267,8 +267,9 @@
     height: 100%!important;
   }
   .update-action {
-    margin-left: 50% !important;
-    margin-bottom: 70% !important;
+    margin-left: 45% !important;
+    margin-top: 0;
+    margin-bottom: 90% !important;
   }
   .add-action {
     margin-left: 35%;

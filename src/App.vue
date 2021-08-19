@@ -34,9 +34,9 @@ export default {
     justify-content: center;
   }
   .tableEmployees {
-    margin-top: 2%;
-    width: 90%;
-    margin-left: 5%;
+    margin-top: 0.5%;
+    width: 80%;
+    margin-left: 10%;
     color: teal;
     background: #F7DFCF;
   }

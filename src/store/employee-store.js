@@ -1,4 +1,5 @@
-import {getNumberOfEmployeesDocFirestore,addEmployeeToFirestore,updateEmployeeFromFirestore, getMaxId, getEmployeeByIdFirestore} from "../firebase/employee-firebase.js";
+import {getNumberOfEmployeesDocFirestore,addEmployeeToFirestore,updateEmployeeFromFirestore,deleteEmployeeFromFirestore, getMaxId, getEmployeeByIdFirestore} 
+from "../firebase/employee-firebase.js";
 import Employee from '../model/employee'
 
 class Store {
@@ -15,7 +16,7 @@ class Store {
         await addEmployeeToFirestore(employee);
     }
     
-    async  deleteEmployee(employeeToDeleteId){
+    async deleteEmployee(employeeToDeleteId){
         this.currentId--;
         await deleteEmployeeFromFirestore(employeeToDeleteId);
     }

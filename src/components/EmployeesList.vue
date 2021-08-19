@@ -7,6 +7,16 @@
             <span>Awesome! You updated the employee!</span>
             <v-btn color="white" text @click="snackbarEmployeeUpdated = false">Close</v-btn>
         </v-snackbar>
+        <v-snackbar v-model="snackbarDeleted" :timeout="-1" top color="deep-orange lighten-3 red--text text--darken-1">
+            <span align="center" class="py-4"><h3>Are you sure ?!</h3></span>
+            <v-divider></v-divider>
+            <v-btn color="white" text @click="deleteConfirmation" class="mx-10">Confirm</v-btn>
+            <v-btn color="white" text @click="closeConfirmation" class="mx-10">Close</v-btn>
+        </v-snackbar>
+        <v-snackbar v-model="snackbarDeletedSuccess" :timeout="4000" top color="teal lighten-4 teal--text text--darken-1">
+            <span>Successfully deleted the employee !!</span>
+            <v-btn color="white" text @click="snackbarDeletedSuccess = false">Close</v-btn>
+        </v-snackbar>
         <v-text-field
             v-model="search"
             filled
@@ -47,6 +57,7 @@
                     outlined
                     fab
                     color="teal darken-3"
+                    @click="deleteCliked(item.id)"
                 >
                     <v-icon>mdi-trash-can</v-icon>
                 </v-btn>
@@ -60,6 +71,8 @@
 <script>
 import { useLoadEmployees } from '../firebase/employee-firebase'
 import EditAddPopup from './EditAddPopup'
+import Store from '../store/employee-store'
+
 
 export default {
     components: {
@@ -69,6 +82,11 @@ export default {
         return {
             search: '',
             snackbarEmployeeUpdated: false,
+            snackbarDeleted: false,
+            snackbarDeletedSuccess: false,
+            deleteId: 0,
+            // store
+            employeesStore: new Store(),
             headers: [
                 {
                     text: 'Id',
@@ -120,6 +138,22 @@ export default {
             employees: useLoadEmployees()
         }
     }, 
+    methods: {
+        deleteCliked(id){
+            console.log('deleting ' + id);
+            this.snackbarDeleted = true;
+            this.deleteId = id;
+        },
+        async deleteConfirmation() {
+            this.snackbarDeleted = false;   
+            console.log("confirm delete " + this.deleteId);
+            await this.employeesStore.deleteEmployee(this.deleteId);
+            this.snackbarDeletedSuccess = true;
+        },
+        closeConfirmation () {
+            this.snackbarDeleted = false;   
+        }
+    }
 }
 </script>
 
@@ -136,10 +170,16 @@ export default {
         margin-bottom: 50%;
     } */
     .delete-action {
-        margin-top: 73% !important;
+        margin-top: 92% !important;
     }
     
     .actions-header {
         padding-left: 4.5% !important;
+    }
+
+    .v-card__title{
+        padding-bottom: 0;
+        padding-top: 0;
+        padding-right: 0;
     }
 </style>

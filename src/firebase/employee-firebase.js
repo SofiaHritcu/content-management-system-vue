@@ -241,5 +241,5 @@ export const useLoadEmployees = () => {
     return employees;
 }
 
-export {getNumberOfEmployeesDocFirestore, addEmployeeToFirestore, getMaxId}
+export {getNumberOfEmployeesDocFirestore, addEmployeeToFirestore, updateEmployeeFromFirestore, getMaxId, getEmployeeByIdFirestore}
 

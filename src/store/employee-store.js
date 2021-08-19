@@ -1,4 +1,4 @@
-import {getNumberOfEmployeesDocFirestore,addEmployeeToFirestore, getMaxId} from "../firebase/employee-firebase.js";
+import {getNumberOfEmployeesDocFirestore,addEmployeeToFirestore,updateEmployeeFromFirestore, getMaxId, getEmployeeByIdFirestore} from "../firebase/employee-firebase.js";
 import Employee from '../model/employee'
 
 class Store {

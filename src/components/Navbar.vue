@@ -23,7 +23,7 @@
    
 
     <v-navigation-drawer app v-model="drawer">
-        <EditAddPopup @employeeAdded="snackbarEmployeeAdded = true"></EditAddPopup>
+        <EditAddPopup @employeeAdded="snackbarEmployeeAdded = true" :edit="false" :dialog="false"></EditAddPopup>
     </v-navigation-drawer>
   </nav>
 </template>

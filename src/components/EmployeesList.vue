@@ -1,15 +1,19 @@
 <template>
 <v-card>
     <v-card-title>
-      Employees
-      <v-spacer></v-spacer>
-      <v-text-field
-          v-model="search"
-          filled
-          label="Search"
-          color="blue-grey lighten-2"
-          hide-details="true"
-          prepend-inner-icon="mdi-account-search"
+        Employees
+        <v-spacer></v-spacer>
+        <v-snackbar v-model="snackbarEmployeeUpdated" :timeout="4000" top color="teal lighten-4 teal--text text--darken-1">
+            <span>Awesome! You updated the employee!</span>
+            <v-btn color="white" text @click="snackbarEmployeeUpdated = false">Close</v-btn>
+        </v-snackbar>
+        <v-text-field
+            v-model="search"
+            filled
+            label="Search"
+            color="blue-grey lighten-2"
+            hide-details="true"
+            prepend-inner-icon="mdi-account-search"
         ></v-text-field>
     </v-card-title>
         <v-data-table
@@ -34,17 +38,12 @@
                     vertical
                 ></v-divider>
                 <router-link :to="`/edit/`">
-                    <v-btn
-                        class="actions edit-action"
-                        outlined
-                        fab
-                        color="teal darken-3"
-                    >
-                        <v-icon>mdi-account-edit</v-icon>
-                    </v-btn>
+                    <EditAddPopup @employeeUpdated="snackbarEmployeeUpdated = true" :edit="true" :id="item.id"></EditAddPopup>
                 </router-link>
+            </template>
+            <template v-slot:item.deleteAction="{ item }">
                 <v-btn
-                    class="actions"
+                    class="actions delete-action"
                     outlined
                     fab
                     color="teal darken-3"
@@ -52,6 +51,7 @@
                     <v-icon>mdi-trash-can</v-icon>
                 </v-btn>
             </template>
+            
         </v-data-table>
   </v-card>
 </template>
@@ -59,11 +59,16 @@
 
 <script>
 import { useLoadEmployees } from '../firebase/employee-firebase'
+import EditAddPopup from './EditAddPopup'
 
 export default {
+    components: {
+        EditAddPopup
+    },
     data (){
         return {
             search: '',
+            snackbarEmployeeUpdated: false,
             headers: [
                 {
                     text: 'Id',
@@ -100,8 +105,14 @@ export default {
                     class: "brown lighten-3 brown--text text--darken-2"
                 },
                 { 
-                    text: 'Actions', 
+                    text: '', 
                     value: 'actions',
+                    sortable: false,
+                    class: "brown lighten-3 brown--text text--darken-2 actions-header"
+                },
+                { 
+                    text: '', 
+                    value: 'deleteAction',
                     sortable: false,
                     class: "brown lighten-3 brown--text text--darken-2 actions-header"
                 },
@@ -121,14 +132,14 @@ export default {
     .v-application a {
         color: white !important;
     }
-    .actions{
-        margin-bottom: 20%;
+    /* .actions{
+        margin-bottom: 50%;
+    } */
+    .delete-action {
+        margin-top: 73% !important;
     }
-    .edit-action {
-        margin-left: 28%;
-        margin-right: auto;
-    }
+    
     .actions-header {
-        padding-left: 8% !important;
+        padding-left: 4.5% !important;
     }
 </style>

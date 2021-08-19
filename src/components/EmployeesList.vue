@@ -32,6 +32,8 @@
             :items="employees.value"
             color="teal"
             class="elevation-1"
+            :loading="!employees.value.length"
+            loading-text="Loading employees ..."
             :search="search"
         >
             <template v-slot:item.id="{ item }">
@@ -62,7 +64,6 @@
                     <v-icon>mdi-trash-can</v-icon>
                 </v-btn>
             </template>
-            
         </v-data-table>
   </v-card>
 </template>
